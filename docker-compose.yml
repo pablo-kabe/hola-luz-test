@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  php:
+    container_name: hola-luz-test
+    build:
+      context: .
+      dockerfile: etc/infrastructure/php/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - .:/app:delegated

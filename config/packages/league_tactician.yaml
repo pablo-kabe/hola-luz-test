@@ -1,0 +1,15 @@
+# Library documentation: http://tactician.thephpleague.com/
+# Bundle documentation: https://github.com/thephpleague/tactician-bundle/blob/v1.0/README.md
+tactician:
+    default_bus: 'sync'
+    method_inflector: 'tactician.handler.method_name_inflector.invoke'
+    commandbus:
+        query:
+            middleware:
+              - tactician.middleware.command_handler
+        sync:
+            middleware:
+              - tactician.middleware.command_handler
+        async:
+            middleware:
+              - tactician.middleware.command_handler

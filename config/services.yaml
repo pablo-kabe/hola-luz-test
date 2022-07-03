@@ -1,0 +1,31 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+      resource: '../src/'
+
+    App\Ui\Command\ImportFileCommand:
+      tags:
+          - { name: 'console.command', command: 'app:import_file' }
+
+    App\Application\Shared\Bus\SyncCommandBusInterface: '@App\Infrastructure\Shared\Tactician\Bus\SyncCommandBus'
+    App\Application\Shared\Bus\AsyncCommandBusInterface: '@App\Infrastructure\Shared\Tactician\Bus\AsyncCommandBus'
+    App\Application\Shared\Bus\QueryBusInterface: '@App\Infrastructure\Shared\Tactician\Bus\QueryBus'
+
+    App\Infrastructure\Readings\Converter\Factory\SymfonyConverterFactory:
+      arguments: [ !tagged_iterator  app.readings.converter ]
+
+    _instanceof:
+      App\Domain\Readings\Converter\Converter:
+        tags: [ 'app.readings.converter' ]
+
+    App\Application\:
+      resource: '../src/Application/*/{*Handler.php,*/*Handler.php,*/*/*Handler.php}'
+      tags:
+        - { name: tactician.handler, typehints: true }
+
+    App\Domain\Readings\Converter\ConverterFactory: '@App\Infrastructure\Readings\Converter\Factory\SymfonyConverterFactory'
